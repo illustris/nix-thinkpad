@@ -1,0 +1,15 @@
+#!/usr/bin/env expect
+set conf [lindex $argv 0];
+set user [lindex $argv 1];
+set pass_pw [lindex $argv 2];
+set pass_otp [lindex $argv 3];
+spawn sudo openvpn --config $conf
+expect "Enter Auth Username:"
+send "$user\n"
+expect "Enter Auth Password:"
+set pw [exec pass "$pass_pw"]
+send "$pw\n"
+expect "Enter Google Authenticator Code"
+set otp [exec pass otp "$pass_otp"]
+send "$otp\n"
+interact
