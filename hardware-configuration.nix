@@ -15,6 +15,9 @@
 		};
 		kernelModules = [ "kvm-intel" ];
 		extraModulePackages = [ ];
+		extraModprobeConfig = ''
+			options i915 enable_guc=2
+		'';
 	};
 
 	fileSystems = {

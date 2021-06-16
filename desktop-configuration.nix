@@ -125,7 +125,7 @@
 	};
 
 	# open ports for VNC
-	networking.firewall.allowedTCPPorts = [ 5900 ];
+	# networking.firewall.allowedTCPPorts = [ 5900 ];
 
 	hardware.pulseaudio = {
 		enable = true;

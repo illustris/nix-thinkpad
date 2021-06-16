@@ -23,7 +23,7 @@ let sources = import ./nix/sources.nix; in
 	# Use the systemd-boot EFI boot loader.
 	boot = {
 		binfmt.emulatedSystems = [ "aarch64-linux" ];
-		kernelPackages = pkgs.linuxPackages_latest;
+		#kernelPackages = pkgs.linuxPackages_latest;
 		loader = {
 			systemd-boot.enable = true;
 			efi.canTouchEfiVariables = true;
