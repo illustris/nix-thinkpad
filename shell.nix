@@ -8,7 +8,7 @@ pkgs.mkShell {
 		niv
 	];
 	shellHook = ''
-		export nixpkgs=${sources.nixpkgs.outPath}
-		export NIX_PATH=nixpkgs=${sources.nixpkgs.outPath}:nixos-config=/etc/nixos/configuration.nix
+		export nixpkgs=${pkgs.path}
+		export NIX_PATH=nixpkgs=${pkgs.path}:nixos-config=/etc/nixos/configuration.nix
 	'';
 }
