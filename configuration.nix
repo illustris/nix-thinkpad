@@ -145,6 +145,7 @@ let sources = import ./nix/sources.nix; in
 				genpass = "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 2";
 				nt = "nix-shell /etc/nixos/shell.nix --run \"sudo nixos-rebuild test\"";
 				ns = "nix-shell /etc/nixos/shell.nix --run \"sudo nixos-rebuild switch\"";
+				grep = "grep --color";
 			};
 			promptInit = ''
 				if [ "$TERM" != "dumb" -o -n "$INSIDE_EMACS" ]; then
