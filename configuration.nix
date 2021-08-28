@@ -46,7 +46,7 @@ let sources = import ./nix/sources.nix; in
 	users.users = {
 		illustris = {
 			isNormalUser = true;
-			extraGroups = [ "wheel" "kvm" "docker" "libvirtd" "adbusers" "audio" "vboxusers" "networkmanager" ];
+			extraGroups = [ "wheel" "kvm" "docker" "libvirtd" "adbusers" "audio" "vboxusers" "networkmanager" "dialout" ];
 			openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
 		};
 		root.openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
