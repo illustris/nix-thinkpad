@@ -23,7 +23,7 @@ let sources = import ./nix/sources.nix; in
 	# Use the systemd-boot EFI boot loader.
 	boot = {
 		binfmt.emulatedSystems = [ "aarch64-linux" ];
-		#kernelPackages = pkgs.linuxPackages_latest;
+		kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 		loader = {
 			systemd-boot.enable = true;
 			efi.canTouchEfiVariables = true;
@@ -225,7 +225,7 @@ let sources = import ./nix/sources.nix; in
 			enable = true;
 			storageDriver = "zfs"; # todo: change to overlay2
 		};
-		#libvirtd.enable = true;
+		libvirtd.enable = true;
 	};
 
 	systemd = {
