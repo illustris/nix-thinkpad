@@ -123,7 +123,7 @@ let sources = import ./nix/sources.nix; in
 	nix = {
 		autoOptimiseStore = true;
 		nixPath = [
-			"nixpkgs=/etc/nixpkgs"
+			"nixpkgs=${pkgs.path}"
 			"nixos-config=/etc/nixos/configuration.nix"
 		];
 		#package = pkgs.nixUnstable;
@@ -143,8 +143,8 @@ let sources = import ./nix/sources.nix; in
 			'';
 			shellAliases = {
 				genpass = "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 2";
-				nt = "nix-shell /etc/nixos/shell.nix --run \"sudo nixos-rebuild test\"";
-				ns = "nix-shell /etc/nixos/shell.nix --run \"sudo nixos-rebuild switch\"";
+				nt = "sudo nix-shell /etc/nixos/shell.nix --run \"nixos-rebuild test\"";
+				ns = "sudo nix-shell /etc/nixos/shell.nix --run \"nixos-rebuild switch\"";
 				grep = "grep --color";
 			};
 			promptInit = ''
