@@ -139,7 +139,6 @@ let sources = import ./nix/sources.nix; in
 				export HISTSIZE=-1 HISTFILESIZE=-1 HISTCONTROL=ignoreboth:erasedups
 				shopt -s histappend
 				export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-				export NIX_PATH=nixpkgs=/etc/nixpkgs:nixos-config=/etc/nixos/configuration.nix
 			'';
 			shellAliases = {
 				genpass = "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 2";
