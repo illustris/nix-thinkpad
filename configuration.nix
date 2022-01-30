@@ -25,7 +25,10 @@ let sources = import ./nix/sources.nix; in
 		binfmt.emulatedSystems = [ "aarch64-linux" ];
 		kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 		loader = {
-			systemd-boot.enable = true;
+			systemd-boot = {
+				enable = true;
+				configurationLimit = 8;
+			};
 			efi.canTouchEfiVariables = true;
 		};
 	};
@@ -60,8 +63,9 @@ let sources = import ./nix/sources.nix; in
 			bind
 			binutils-unwrapped
 			bmon
+			btop
 			cmatrix # More useful than you might think
-			#ec2_api_tools
+			emacs
 			ethtool
 			expect
 			fatrace
@@ -69,9 +73,9 @@ let sources = import ./nix/sources.nix; in
 			gdb
 			git
 			gnumake
-			#graphviz
+			gdu
 			htop
-			#imagemagick
+			hydra-check
 			iotop
 			iperf
 			jq
@@ -87,6 +91,7 @@ let sources = import ./nix/sources.nix; in
 			nix-du
 			nix-prefetch-git
 			nix-tree
+			nixos-shell
 			nnn
 			openvpn
 			p7zip
@@ -108,8 +113,8 @@ let sources = import ./nix/sources.nix; in
 			valgrind
 			wget
 			youtube-dl
+			ytfzf
 			(cscope.override{emacsSupport = false;})
-			#(emacs.override{withGTK3 = false; withX = false;})
 			(pass.withExtensions (exts: [ exts.pass-otp ]))
 			((pkgs.callPackage ./packages/passcol) {})
 			(writeScriptBin "vpnpass" (builtins.readFile ./scripts/vpnpass))
@@ -130,6 +135,7 @@ let sources = import ./nix/sources.nix; in
 		#extraOptions = ''
 		#	experimental-features = nix-command flakes
 		#'';
+		trustedUsers = [ "root" "illustris" ];
 	};
 
 	programs = {
@@ -216,8 +222,11 @@ let sources = import ./nix/sources.nix; in
 	};
 
 
-	# forgot why I needed this
-	xdg.portal.enable = true;
+	# for flatpak
+	xdg.portal = {
+		enable = true;
+		extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+	};
 
 	virtualisation = {
 		docker = {
