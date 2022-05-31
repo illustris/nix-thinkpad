@@ -40,29 +40,28 @@
 	};
 
 	environment.systemPackages = with pkgs; [
+		arandr
 		dmenu
-		i3lock
-		ungoogled-chromium
-		perlPackages.AppClusterSSH
-		st
-		virt-manager
 		glxinfo
-		minecraft
-		sublime3
-		rescuetime
+		gnome.gnome-screenshot
+		google-chrome # screen sharing on gmeet
+		# guake # TODO: fine a better popover terminal
+		i3lock
+		insomnia
+		moonlight-qt
 		mpv
 		pavucontrol
-		kcachegrind
+		perlPackages.AppClusterSSH
 		remmina
-		insomnia
-		wireshark
-		vlc
-		steam
-		moonlight-qt
-		zoom-us
 		signal-desktop
-		google-chrome # screen sharing on gmeet
-		guake
+		st
+		steam
+		sublime3
+		ungoogled-chromium
+		virt-manager
+		vlc
+		wireshark
+		zoom-us
 	];
 
 	services = {
@@ -100,38 +99,38 @@
 	};
 
 	systemd.user.services = {
-		guake = {
-			enable = true;
-			description = "Guake terminal";
-			serviceConfig = {
-				Type = "simple";
-				ExecStart = "${pkgs.guake}/bin/guake";
-				Restart = "always";
-			};
-			after = [ "dbus.service" ];
-		};
+		# guake = {
+		#	enable = true;
+		#	description = "Guake terminal";
+		#	serviceConfig = {
+		#		Type = "simple";
+		#		ExecStart = "${pkgs.guake}/bin/guake";
+		#		Restart = "always";
+		#	};
+		#	after = [ "dbus.service" ];
+		# };
+		picom.bindsTo = [ "graphical-session.target" ];
 	};
 
 	# Start VNC on boot
-	systemd.services.x11vnc = {
-		path = [ pkgs.gawk pkgs.nettools ];
-		wantedBy = [ "multi-user.target" ];
-		requires = [ "graphical.target" ];
-		description = "VNC server";
-		serviceConfig = {
-			Type = "simple";
-			ExecStart = "${pkgs.x11vnc}/bin/x11vnc -display :0 -loop -shared -forever -auth /var/run/lightdm/root/:0 -rfbauth /var/lib/x11vnc/x11vnc_auth";
-		};
-	};
+	# systemd.services.x11vnc = {
+	#	path = [ pkgs.gawk pkgs.nettools ];
+	#	wantedBy = [ "multi-user.target" ];
+	#	requires = [ "graphical.target" ];
+	#	description = "VNC server";
+	#	serviceConfig = {
+	#		Type = "simple";
+	#		ExecStart = "${pkgs.x11vnc}/bin/x11vnc -display :0 -loop -shared -forever -auth /var/run/lightdm/root/:0 -rfbauth /var/lib/x11vnc/x11vnc_auth";
+	#	};
+	# };
 
 	# open ports for VNC
 	# networking.firewall.allowedTCPPorts = [ 5900 ];
 
 	hardware.pulseaudio = {
 		enable = true;
-		extraModules = [ pkgs.pulseaudio-modules-bt ];
+		# extraModules = [ pkgs.pulseaudio-modules-bt ];
 		package = pkgs.pulseaudioFull;
 	};
-	#sound.enable = true;
 
 }

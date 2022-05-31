@@ -13,11 +13,12 @@
 			availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
 			kernelModules = [ ];
 		};
-		kernelModules = [ "kvm-intel" ];
-		extraModulePackages = [ ];
 		extraModprobeConfig = ''
 			options i915 enable_guc=2
 		'';
+		# rtl8814au USB WiFi adapter
+		extraModulePackages = [ config.boot.kernelPackages.rtl8814au ];
+		kernelModules = [ "kvm-intel" "8814au" ];
 	};
 
 	fileSystems = {

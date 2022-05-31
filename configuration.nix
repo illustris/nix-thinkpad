@@ -49,7 +49,7 @@ let sources = import ./nix/sources.nix; in
 	users.users = {
 		illustris = {
 			isNormalUser = true;
-			extraGroups = [ "wheel" "kvm" "docker" "libvirtd" "adbusers" "audio" "vboxusers" "networkmanager" "dialout" ];
+			extraGroups = [ "wheel" "kvm" "docker" "libvirtd" "adbusers" "audio" "vboxusers" "networkmanager" "dialout" "plugdev" ];
 			openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
 		};
 		root.openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
@@ -83,13 +83,16 @@ let sources = import ./nix/sources.nix; in
 			latencytop
 			linuxPackages.perf
 			lsof
+			minicom
 			mosh
 			ncdu
 			neofetch
 			networkmanager
 			nfs-utils
 			nix-du
+			nix-index
 			nix-prefetch-git
+			nix-top
 			nix-tree
 			nixos-shell
 			nnn
@@ -114,6 +117,7 @@ let sources = import ./nix/sources.nix; in
 			wget
 			youtube-dl
 			ytfzf
+			yubico-piv-tool
 			(cscope.override{emacsSupport = false;})
 			(pass.withExtensions (exts: [ exts.pass-otp ]))
 			((pkgs.callPackage ./packages/passcol) {})
@@ -132,9 +136,9 @@ let sources = import ./nix/sources.nix; in
 			"nixos-config=/etc/nixos/configuration.nix"
 		];
 		#package = pkgs.nixUnstable;
-		#extraOptions = ''
-		#	experimental-features = nix-command flakes
-		#'';
+		extraOptions = ''
+			experimental-features = nix-command flakes
+		'';
 		trustedUsers = [ "root" "illustris" ];
 	};
 
@@ -218,6 +222,37 @@ let sources = import ./nix/sources.nix; in
 
 		# till parsec is packaged
 		flatpak.enable = true;
+
+		udev.extraRules = ''
+			SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", \
+				MODE="664", GROUP="dialout"
+			# this is for ujprog libusb access
+			ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", \
+				GROUP="dialout", MODE="666"
+		'' + ''
+			# Rules for the Saleae Logic analyzer to allow to run the programs a normal user
+			# being part of the plugdev group. Simply copy the file to /etc/udev/rules.d/
+			# and plug the device
+
+			BUS!="usb", ACTION!="add", SUBSYSTEM!=="usb_device", GOTO="saleae_logic_rules_end"
+
+			# Saleae Logic analyzer (USB Based)
+			# Bus 006 Device 006: ID 0925:3881 Lakeview Research
+			# Bus 001 Device 009: ID 21a9:1004 Product: Logic S/16, Manufacturer: Saleae LLC
+
+			ATTR{idVendor}=="0925", ATTR{idProduct}=="3881", MODE="664", GROUP="plugdev"
+			ATTR{idVendor}=="21a9", ATTR{idProduct}=="1004", MODE="664", GROUP="plugdev"
+
+			LABEL="saleae_logic_rules_end"
+		'' + ''
+			# this udev file should be used with udev 188 and newer
+			ACTION!="add|change", GOTO="u2f_end"
+
+			# Yubico YubiKey
+			KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0113|0114|0115|0116|0120|0121|0200|0402|0403|0406|0407|0410", TAG+="uaccess", GROUP="plugdev", MODE="0660"
+
+			LABEL="u2f_end"
+		'';
 
 	};
 
