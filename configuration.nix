@@ -55,6 +55,8 @@ let sources = import ./nix/sources.nix; in
 		root.openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
 	};
 
+	documentation.dev.enable = true;
+
 	# List packages installed in system profile. To search, run:
 	# $ nix search wget
 	environment = {
@@ -83,6 +85,8 @@ let sources = import ./nix/sources.nix; in
 			latencytop
 			linuxPackages.perf
 			lsof
+			man-pages
+			man-pages-posix
 			minicom
 			mosh
 			ncdu
