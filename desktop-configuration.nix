@@ -35,6 +35,7 @@
 				"chlffgpmiacpedhhbkiomidkjlcfhogd" # pushbullet
 				"aghfnjkcakhmadgdomlmlhhaocbkloab" # just black
 				"fmkadmapgofadopljbjfkapdkoienihi" # React Developer Tools
+				"naepdomgkenhinolocfifgehidddafch" # Browserpass
 			];
 		};
 	};
@@ -69,7 +70,7 @@
 			enable = true;
 
 			# breaks touch input if enabled
-			# wacom.enable = true;
+			wacom.enable = true;
 
 			# Touchpad
 			libinput.enable = true;
