@@ -134,7 +134,6 @@ let sources = import ./nix/sources.nix; in
 	};
 
 	nix = {
-		autoOptimiseStore = true;
 		nixPath = [
 			"nixpkgs=${pkgs.path}"
 			"nixos-config=/etc/nixos/configuration.nix"
@@ -143,7 +142,10 @@ let sources = import ./nix/sources.nix; in
 		extraOptions = ''
 			experimental-features = nix-command flakes
 		'';
-		trustedUsers = [ "root" "illustris" ];
+		settings = {
+			trusted-users = [ "root" "illustris" ];
+			auto-optimise-store = true;
+		};
 	};
 
 	programs = {
@@ -182,7 +184,7 @@ let sources = import ./nix/sources.nix; in
 
 		# Collect system metrics using prometheus and node exporter
 		prometheus = {
-			enable = false;
+			enable = true;
 			exporters = {
 				node = {
 					enable = true;
@@ -257,6 +259,8 @@ let sources = import ./nix/sources.nix; in
 
 			LABEL="u2f_end"
 		'';
+
+		zfs.autoScrub.enable = true;
 
 	};
 

@@ -94,7 +94,6 @@
 		picom = {
 			enable = true;
 			vSync = true;
-			refreshRate = 60;
 			backend = "glx";
 		};
 	};
