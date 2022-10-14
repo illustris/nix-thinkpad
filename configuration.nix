@@ -162,8 +162,6 @@
 			'';
 			shellAliases = {
 				genpass = "cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 20 | head -n 2";
-				nt = "sudo nix-shell /etc/nixos/shell.nix --run \"nixos-rebuild test\"";
-				ns = "sudo nix-shell /etc/nixos/shell.nix --run \"nixos-rebuild switch\"";
 				grep = "grep --color";
 			};
 			promptInit = ''
