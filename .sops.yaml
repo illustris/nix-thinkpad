@@ -1,0 +1,9 @@
+keys:
+  - &illustris 1AD489A6D4879992C0033ECE56C8FC0B899FEFA3
+  - &thinkpad 3c749d66c13c0ccd8a35c1c178411921a493c71d
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+      - pgp:
+          - *illustris
+          - *thinkpad

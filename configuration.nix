@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let sources = import ./nix/sources.nix; in
 {
 	imports = [
 		# Include the results of the hardware scan.
@@ -46,13 +45,18 @@ let sources = import ./nix/sources.nix; in
 
 	security.sudo.wheelNeedsPassword = false;
 
-	users.users = {
+	users.users = let
+		keys = pkgs.fetchurl {
+			url = "https://github.com/illustris.keys";
+			hash = "sha256-Ue0orizAxflXASj3C4+UJ6mcJUmzeSiipls+7D2CKqE=";
+		};
+	in {
 		illustris = {
 			isNormalUser = true;
 			extraGroups = [ "wheel" "kvm" "docker" "libvirtd" "adbusers" "audio" "vboxusers" "networkmanager" "dialout" "plugdev" ];
-			openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
+			openssh.authorizedKeys.keyFiles = [ keys ];
 		};
-		root.openssh.authorizedKeys.keyFiles = [ ./secrets/ssh_pubkeys ];
+		root.openssh.authorizedKeys.keyFiles = [ keys ];
 	};
 
 	documentation.dev.enable = true;
@@ -129,7 +133,7 @@ let sources = import ./nix/sources.nix; in
 		];
 		etc = {
 			openvpn.source = "${pkgs.update-resolv-conf}/libexec/openvpn";
-			nixpkgs.source = sources.nixpkgs;
+			nixpkgs.source = pkgs.path;
 		};
 	};
 
@@ -206,7 +210,7 @@ let sources = import ./nix/sources.nix; in
 
 		grafana = {
 			enable = true;
-			security.adminPasswordFile = ./secrets/grafana_admin;
+			security.adminPasswordFile = config.sops.secrets.grafana_admin_pass.path;
 			provision = {
 				enable = true;
 				datasources = [
@@ -281,8 +285,16 @@ let sources = import ./nix/sources.nix; in
 
 	systemd = {
 		# Disable autostart
-		services.grafana.wantedBy = lib.mkForce [];
+		services.grafana = {
+			wantedBy = lib.mkForce [];
+			serviceConfig.SupplementaryGroups = [ config.users.groups.keys.name ];
+		};
 		services.docker.wantedBy = lib.mkForce [];
+	};
+
+	sops = {
+		defaultSopsFile = ./secrets/sops.yaml;
+		secrets.grafana_admin_pass.owner = config.users.users.grafana.name;
 	};
 
 	# This value determines the NixOS release from which the default
