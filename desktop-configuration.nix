@@ -30,12 +30,13 @@
 				"lcbjdhceifofjlpecfpeimnnphbcjgnc" # xBrowserSync
 				"gcbommkclmclpchllfjekcdonpmejbdp" # https everywhere
 				"cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
-				"gppongmhjkpfnbhagpmjfkannfbllamg" # wappalyzer
+				# "gppongmhjkpfnbhagpmjfkannfbllamg" # wappalyzer
 				"bdakmnplckeopfghnlpocafcepegjeap" # RescueTime
 				"chlffgpmiacpedhhbkiomidkjlcfhogd" # pushbullet
 				"aghfnjkcakhmadgdomlmlhhaocbkloab" # just black
 				"fmkadmapgofadopljbjfkapdkoienihi" # React Developer Tools
 				"naepdomgkenhinolocfifgehidddafch" # Browserpass
+				"ahmkjjgdligadogjedmnogbpbcpofeeo" # The Great Suspender
 			];
 		};
 	};

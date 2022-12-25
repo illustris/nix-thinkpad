@@ -77,7 +77,7 @@
 	};
 	#hardware.cpu.intel.updateMicrocode = true;
 
-	zramSwap.enable = true;
+	# zramSwap.enable = true;
 
 	boot = {
 		zfs.devNodes = "/dev/disk/by-label";

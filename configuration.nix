@@ -71,11 +71,13 @@
 			bmon
 			btop
 			cmatrix # More useful than you might think
+			config.boot.kernelPackages.perf
 			emacs
 			ethtool
 			expect
 			fatrace
 			file
+			flamegraph
 			gdb
 			git
 			gnumake
@@ -142,13 +144,10 @@
 			"nixpkgs=${pkgs.path}"
 			"nixos-config=/etc/nixos/configuration.nix"
 		];
-		#package = pkgs.nixUnstable;
-		extraOptions = ''
-			experimental-features = nix-command flakes
-		'';
 		settings = {
-			trusted-users = [ "root" "illustris" ];
 			auto-optimise-store = true;
+			experimental-features = [ "nix-command" "flakes" ];
+			trusted-users = [ "root" "illustris" ];
 		};
 	};
 
@@ -208,18 +207,17 @@
 
 		grafana = {
 			enable = true;
-			security.adminPasswordFile = config.sops.secrets.grafana_admin_pass.path;
+			# security.adminPasswordFile = config.sops.secrets.grafana_admin_pass.path;
 			provision = {
 				enable = true;
-				datasources = [
-					{
-						url = "http://localhost:9090";
-						name = "Prometheus";
-						type = "prometheus";
-						isDefault = true;
-					}
-				];
+				datasources.settings.datasources = [{
+					url = "http://localhost:9090";
+					name = "Prometheus";
+					type = "prometheus";
+					isDefault = true;
+				}];
 			};
+			settings.security.admin_password = "$__file{${config.sops.secrets.grafana_admin_pass.path}}";
 		};
 
 		# Enable the OpenSSH daemon.
