@@ -18,7 +18,10 @@
 				modules = [
 					./configuration.nix
 					sops-nix.nixosModules.sops
-					{nix.registry.np.flake = nixpkgs;}
+					{
+						nix.registry.nixpkgs.flake = nixpkgs;
+						environment.etc.flake.source = self;
+					}
 				];
 			};
 		};
