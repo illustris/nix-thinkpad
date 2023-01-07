@@ -84,12 +84,14 @@
 			gdu
 			htop
 			hydra-check
+			intel-gpu-tools
 			iotop
 			iperf
 			jq
 			killall
 			latencytop
 			linuxPackages.perf
+			lm_sensors
 			lsof
 			man-pages
 			man-pages-posix
@@ -186,6 +188,7 @@
 			enable = true;
 			defaultCacheTtl = 60*60*24;
 			defaultCacheTtlSsh = 60*60*24;
+			extraConfig = "auto-expand-secmem";
 		};
 	};
 
@@ -292,11 +295,6 @@
 			serviceConfig.SupplementaryGroups = [ config.users.groups.keys.name ];
 		};
 		services.docker.wantedBy = lib.mkForce [];
-		user.services.gpg-agent.serviceConfig.ExecStart = lib.mkForce [ "" ( ''
-			${pkgs.gnupg}/bin/gpg-agent --supervised \
-				--pinentry-program ${pkgs.pinentry.curses}/bin/pinentry \
-				--auto-expand-secmem
-		'') ];
 	};
 
 	sops = {
