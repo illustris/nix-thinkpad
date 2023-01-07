@@ -6,15 +6,20 @@
 			inputs.nixpkgs.follows = "nixpkgs";
 			inputs.nixpkgs-stable.follows = "nixpkgs";
 		};
+		home-manager = {
+			url = "github:nix-community/home-manager";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
 	};
 
-	outputs = { self, nixpkgs, sops-nix, ... }: let
+	outputs = { self, nixpkgs, sops-nix, home-manager, ... }: let
 		supportedSystems = [ "x86_64-linux" ];
 		forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
 	in {
 		nixosConfigurations = {
 			illustris-thinkpad = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
+
 				modules = [
 					./configuration.nix
 					sops-nix.nixosModules.sops
@@ -22,6 +27,7 @@
 						nix.registry.nixpkgs.flake = nixpkgs;
 						environment.etc.flake.source = self;
 					}
+					home-manager.nixosModule
 				];
 			};
 		};
