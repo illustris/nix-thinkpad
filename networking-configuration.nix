@@ -12,5 +12,8 @@
 			enable = true;
 		};
 	};
-	services.zerotierone.enable = true;
+	services = {
+		zerotierone.enable = true;
+		resolved.enable = true;
+	};
 }
