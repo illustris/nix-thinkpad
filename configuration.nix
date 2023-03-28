@@ -115,7 +115,7 @@
 			powertop
 			pv
 			python3
-			pythonPackages.percol
+			python3Packages.percol
 			ranger
 			screen
 			sshfs
