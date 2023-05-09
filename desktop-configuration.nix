@@ -63,6 +63,7 @@
 		virt-manager
 		vlc
 		wireshark
+		xsecurelock
 		zoom-us
 	];
 
