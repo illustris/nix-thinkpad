@@ -6,8 +6,8 @@
 		src = self.fetchFromGitHub {
 			owner = "illustris";
 			repo = "st";
-			rev = "e81a0418d6333127e7b8b7c3690ea18fc3278f73";
-			sha256 = "107hk45m67hh10vbkmph98chcl3ix601bjr8s89pmf5j0z8d2aw7";
+			rev = "fa363487355fe0b27d82e7247577802ac66e4b0f";
+			hash = "sha256-KLh4yGSq7pf6F+mWZvH6slN+Qa1/LkjWbhFTxQ2vYng=";
 		};
 		# src = /home/illustris/src/st;
 		buildInputs = oldAttrs.buildInputs ++ (with super; [ harfbuzz ]);
