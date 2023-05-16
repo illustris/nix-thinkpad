@@ -42,7 +42,8 @@
 		};
 	};
 
-	time.timeZone = "Asia/Kolkata";
+	# make dynamic
+	# time.timeZone = "Asia/Kolkata";
 
 	security.sudo.wheelNeedsPassword = false;
 
