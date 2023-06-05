@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, modulesPath, ... }:
 
 {
 	imports = [
@@ -6,6 +6,7 @@
 		./hardware-configuration.nix
 		./desktop-configuration.nix
 		./networking-configuration.nix
+		"${modulesPath}/virtualisation/qemu-vm.nix"
 	];
 
 	nixpkgs.overlays = [
@@ -57,6 +58,8 @@
 			isNormalUser = true;
 			extraGroups = [ "wheel" "kvm" "docker" "libvirtd" "adbusers" "audio" "vboxusers" "networkmanager" "dialout" "plugdev" ];
 			openssh.authorizedKeys.keyFiles = [ keys ];
+			# only for nixos-rebuild build-vm
+			initialPassword = "a";
 		};
 		root.openssh.authorizedKeys.keyFiles = [ keys ];
 	};
@@ -230,27 +233,8 @@
 	services = {
 		blueman.enable = true;
 
-		# Collect system metrics using prometheus and node exporter
-		prometheus = {
-			enable = true;
-			exporters = {
-				node = {
-					enable = true;
-					enabledCollectors = [ "systemd" ];
-				};
-			};
-			scrapeConfigs = [
-				{
-					job_name = "node_exporter";
-					scrape_interval = "10s";
-					static_configs = [
-						{
-							targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
-						}
-					];
-				}
-			];
-		};
+		# till parsec is packaged
+		flatpak.enable = true;
 
 		grafana = {
 			enable = true;
@@ -273,10 +257,40 @@
 			settings.X11Forwarding = true;
 		};
 
-		# till parsec is packaged
-		flatpak.enable = true;
-
 		pcscd.enable = true;
+
+		# Collect system metrics using prometheus and node exporter
+		prometheus = {
+			enable = true;
+			exporters = {
+				node = {
+					enable = true;
+					enabledCollectors = [ "systemd" ];
+				};
+			};
+			scrapeConfigs = [
+				{
+					job_name = "node_exporter";
+					scrape_interval = "10s";
+					static_configs = [
+						{
+							targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
+						}
+					];
+				}
+			];
+		};
+
+		thermald.enable = true;
+		tlp = {
+			enable = true;
+			settings = {
+				CPU_SCALING_GOVERNOR_ON_AC = "performance";
+				CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+				CPU_MAX_PERF_ON_AC = 100;
+				CPU_MAX_PERF_ON_BAT = 30;
+			};
+		};
 
 		udev = {
 			packages = [ pkgs.yubikey-personalization ];
