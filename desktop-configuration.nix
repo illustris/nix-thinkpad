@@ -1,5 +1,7 @@
 { config, pkgs, callPackage, ... }:
-
+# let
+# 	dwlCustom = pkgs.callPackage ./packages/dwl {};
+# in
 {
 
 	# Build my st fork
@@ -44,6 +46,8 @@
 	environment.systemPackages = with pkgs; [
 		arandr
 		dmenu
+		dwl
+		#dwlCustom
 		glxinfo
 		gnome.gnome-screenshot
 		google-chrome # screen sharing on gmeet
@@ -79,6 +83,7 @@
 
 			displayManager = {
 				defaultSession = "none+dwm";
+				# sessionPackages = [ dwlCustom ];
 			};
 
 			windowManager = {

@@ -6,7 +6,6 @@
 		./hardware-configuration.nix
 		./desktop-configuration.nix
 		./networking-configuration.nix
-		"${modulesPath}/virtualisation/qemu-vm.nix"
 	];
 
 	nixpkgs.overlays = [
@@ -185,6 +184,10 @@
 		};
 		mosh.enable = true;
 		mtr.enable = true;
+		sway = {
+			enable = true;
+			wrapperFeatures.gtk = true;
+		};
 	};
 
 	home-manager.users.illustris = { ... }: {
@@ -311,8 +314,8 @@
 				# Bus 006 Device 006: ID 0925:3881 Lakeview Research
 				# Bus 001 Device 009: ID 21a9:1004 Product: Logic S/16, Manufacturer: Saleae LLC
 
-				ATTR{idVendor}=="0925", ATTR{idProduct}=="3881", MODE="664", GROUP="plugdev"
-				ATTR{idVendor}=="21a9", ATTR{idProduct}=="1004", MODE="664", GROUP="plugdev"
+				ATTR{idVendor}=="0925", ATTR{idProduct}=="3881", TAG+="uaccess"
+				ATTR{idVendor}=="21a9", ATTR{idProduct}=="1004", TAG+="uaccess"
 
 				LABEL="saleae_logic_rules_end"
 			'';
