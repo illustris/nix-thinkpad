@@ -76,6 +76,7 @@
 			btop
 			cmatrix # More useful than you might think
 			config.boot.kernelPackages.perf
+			docker-compose
 			emacs
 			ethtool
 			expect
