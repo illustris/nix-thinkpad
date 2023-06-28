@@ -14,8 +14,6 @@
 		(nerdfonts.override { fonts = [ "DroidSansMono" ]; })
 	];
 
-	nixpkgs.config.allowUnfree = true;
-
 	programs = {
 		browserpass.enable = true;
 		dconf.enable = true;
@@ -62,7 +60,6 @@
 		signal-desktop
 		st
 		steam
-		sublime3
 		ungoogled-chromium
 		virt-manager
 		vlc

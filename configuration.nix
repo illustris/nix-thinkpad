@@ -6,6 +6,7 @@
 		./hardware-configuration.nix
 		./desktop-configuration.nix
 		./networking-configuration.nix
+		./every-day-we-stray-further-from-stallman.nix
 	];
 
 	nixpkgs.overlays = [
