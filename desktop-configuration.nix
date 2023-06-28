@@ -1,4 +1,4 @@
-{ config, pkgs, callPackage, ... }:
+{ config, pkgs, callPackage, lib, ... }:
 # let
 # 	dwlCustom = pkgs.callPackage ./packages/dwl {};
 # in
@@ -68,7 +68,7 @@
 		vlc
 		wireshark
 		xsecurelock
-		zoom-us
+		# zoom-us
 	];
 
 	services = {
@@ -85,6 +85,8 @@
 				defaultSession = "none+dwm";
 				# sessionPackages = [ dwlCustom ];
 			};
+
+			videoDrivers = [ "displaylink" "modesetting" ];
 
 			windowManager = {
 				i3 = {

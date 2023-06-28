@@ -1,6 +1,8 @@
 {
 	inputs = {
-		nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
+		# for https://github.com/NixOS/nixpkgs/pull/239883
+		# revert to nixos-unstable once it propagates
+		nixpkgs.url = github:nixos/nixpkgs/nixos-unstable-small;
 		sops-nix = {
 			url = github:Mic92/sops-nix;
 			inputs.nixpkgs.follows = "nixpkgs";

@@ -23,6 +23,7 @@
 	boot = {
 		binfmt.emulatedSystems = [ "aarch64-linux" ];
 		kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+
 		kernelParams = [ "pcie_aspm=off" ];
 		loader = {
 			systemd-boot = {
